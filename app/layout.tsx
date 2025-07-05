@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/theme-provider";
+import NavBar from "@/components/ui/navbar";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
@@ -43,7 +44,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main className="container mx-auto p-4">{children}</main>
+            <NavBar />
+            <main className="container mx-auto">{children}</main>
           </ThemeProvider>
         </body>
       </html>
