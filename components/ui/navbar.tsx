@@ -7,19 +7,23 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUser } from "@clerk/nextjs";
+import { useAuth, UserButton } from "@clerk/nextjs";
 import { Menu, Moon, Sun, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import NavLink from "../NavLink";
+import { Skeleton } from "./skeleton";
 
 export default function NavBar() {
   const { theme, setTheme } = useTheme();
-  const { user, isSignedIn } = useUser();
+  const { isSignedIn } = useAuth();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  if (!mounted) return <Skeleton className="h-16 w-full" />;
+
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
@@ -27,11 +31,11 @@ export default function NavBar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Terminal className="h-6 w-6 text-gray-800 dark:text-gray-100" />
-          <span className="sr-only">Givens</span>
+          <span className="font-bold font-mono text-lg">Givens</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link
             href="/"
             className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
@@ -39,50 +43,57 @@ export default function NavBar() {
           >
             Editor
           </Link>
-          {isSignedIn && (
-            <>
-              <Link
-                href="/analytics"
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                prefetch={false}
-              >
-                Analytics
-              </Link>
-              <Link
-                href="/mypastes"
-                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-                prefetch={false}
-              >
-                My Pastes
-              </Link>
-            </>
-          )}
+          <NavLink
+            href="/analytics"
+            label="Analytics"
+            isSignedIn={isSignedIn}
+          />
+          <NavLink href="/mypastes" label="My Pastes" isSignedIn={isSignedIn} />
         </nav>
 
+        {/* Actions */}
         <div className="flex items-center gap-4">
+          {/* Theme toggle */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={toggleTheme}
             className="rounded-full"
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? (
               <Sun className="h-5 w-5 text-yellow-400" />
             ) : (
               <Moon className="h-5 w-5 text-gray-600" />
             )}
-            <span className="sr-only">Toggle theme</span>
           </Button>
 
+          {/* Auth */}
+          {isSignedIn ? (
+            <UserButton />
+          ) : (
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+            >
+              <Link href="/sign-in" prefetch={false} aria-label="Sign In">
+                Sign In
+              </Link>
+            </Button>
+          )}
+
+          {/* Mobile Nav */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full md:hidden"
+                className="md:hidden rounded-full"
               >
                 <Menu className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-                <span className="sr-only">Toggle navigation menu</span>
+                <span className="sr-only">Open Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

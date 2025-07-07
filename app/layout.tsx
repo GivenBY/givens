@@ -7,6 +7,8 @@ import { Fira_Code, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
+import { dark } from "@clerk/themes";
+
 const fontSans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -30,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{ baseTheme: dark }}>
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
@@ -41,7 +43,7 @@ export default function RootLayout({
         >
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

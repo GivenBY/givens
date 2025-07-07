@@ -1,13 +1,17 @@
 "use client";
+import { LanguageSelector } from "@/components/editor/LanguageSelector";
 import { MonacoWrapper } from "@/components/editor/MonacoWrapper";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@clerk/nextjs";
-import { Copy, Save, Share2 } from "lucide-react";
+import { Copy, Eye, EyeOff, Save, Share2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 export default function Home() {
+  const [language, setLanguage] = useState("javascript");
+  const [isPublic, setIsPublic] = useState(true);
   const { userId, isSignedIn } = useAuth();
   const handleCopy = () => {
     navigator.clipboard.writeText("Your code snippet here");
@@ -37,7 +41,27 @@ export default function Home() {
               className="text-lg font-medium"
             />
           </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 text-sm font-medium">
+                <span>{isPublic ? "Public" : "Private"}</span>
+                {isPublic ? (
+                  <Eye className="h-4 w-4" />
+                ) : (
+                  <EyeOff className="h-4 w-4" />
+                )}
+              </div>
+              <Switch
+                id="visibility"
+                checked={isPublic}
+                disabled={!isSignedIn}
+                onCheckedChange={setIsPublic}
+              />
+              <LanguageSelector value={language} onChange={setLanguage} />
+            </div>
+          </div>
         </div>
+
         <div className="relative">
           <Card>
             <CardContent className="p-0">

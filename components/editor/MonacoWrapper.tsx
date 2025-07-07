@@ -29,7 +29,7 @@ export const MonacoWrapper = ({
           readOnly: false,
           minimap: { enabled: false },
           fontSize: 14,
-          fontFamily: "JetBrains Mono, Monaco, Consolas, monospace",
+          fontFamily: "Fira Code, Monaco, Consolas, monospace",
           lineNumbers: "on",
           renderWhitespace: "selection",
           scrollBeyondLastLine: false,
@@ -40,6 +40,8 @@ export const MonacoWrapper = ({
           lineDecorationsWidth: 10,
           lineNumbersMinChars: 3,
           padding: { top: 16, bottom: 16 },
+          fontLigatures: true,
+          contextmenu: false,
         }}
         theme="vs-dark"
       />
