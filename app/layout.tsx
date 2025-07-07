@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Fira_Code, Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const fontSans = Inter({
@@ -45,7 +46,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
-            <main className="container mx-auto">{children}</main>
+            <main className="container mx-auto !mt-4">{children}</main>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>

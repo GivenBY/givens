@@ -1,3 +1,87 @@
+"use client";
+import { MonacoWrapper } from "@/components/editor/MonacoWrapper";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@clerk/nextjs";
+import { Copy, Save, Share2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 export default function Home() {
-  return <div>HomePage</div>;
+  const { userId, isSignedIn } = useAuth();
+  const handleCopy = () => {
+    navigator.clipboard.writeText("Your code snippet here");
+    toast("Code copied to clipboard!");
+  };
+  const handleSave = () => {
+    if (!isSignedIn) {
+      toast("Please sign in to save your code.");
+      return;
+    }
+    toast("Code saved!");
+  };
+  const handleShare = () => {
+    toast("Link copied to clipboard!");
+  };
+  const [title, setTitle] = useState("");
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="flex-1 max-w-md">
+            <Input
+              placeholder="Enter paste title..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="text-lg font-medium"
+            />
+          </div>
+        </div>
+        <div className="relative">
+          <Card>
+            <CardContent className="p-0">
+              <div className="h-[600px] relative">
+                <MonacoWrapper
+                  language="javascript"
+                  value={""}
+                  onChange={() => {}}
+                />
+                <div className="absolute top-4 right-4 z-10">
+                  <Button
+                    onClick={handleCopy}
+                    size="sm"
+                    variant="secondary"
+                    className="shadow-lg backdrop-blur-sm bg-background/80 hover:bg-background/90 transition-all duration-200"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="absolute bottom-4 right-4 z-10 flex space-x-2">
+                  <Button
+                    onClick={handleShare}
+                    variant="outline"
+                    size="sm"
+                    className="shadow-lg backdrop-blur-sm bg-background/80 hover:bg-background/90 transition-all duration-200 btn-hover"
+                  >
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Share
+                  </Button>
+
+                  <Button
+                    onClick={handleSave}
+                    size="sm"
+                    className="shadow-lg backdrop-blur-sm transition-all duration-200 btn-hover "
+                  >
+                    <Save className="h-4 w-4 mr-2" />
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
 }
