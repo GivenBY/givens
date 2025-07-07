@@ -26,6 +26,11 @@ export const MonacoWrapper = ({
         value={value}
         onChange={onChange}
         options={{
+          bracketPairColorization: {
+            enabled: true,
+            independentColorPoolPerBracketType: false,
+          },
+          "semanticHighlighting.enabled": true,
           readOnly: false,
           minimap: { enabled: false },
           fontSize: 14,
@@ -42,6 +47,9 @@ export const MonacoWrapper = ({
           padding: { top: 16, bottom: 16 },
           fontLigatures: true,
           contextmenu: false,
+          guides: {
+            indentation: false,
+          },
         }}
         theme="vs-dark"
       />

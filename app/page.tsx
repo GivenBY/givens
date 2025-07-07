@@ -1,6 +1,7 @@
 "use client";
 import { LanguageSelector } from "@/components/editor/LanguageSelector";
 import { MonacoWrapper } from "@/components/editor/MonacoWrapper";
+import { ShareModal } from "@/components/modals/ShareModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +13,8 @@ import { toast } from "sonner";
 export default function Home() {
   const [language, setLanguage] = useState("javascript");
   const [isPublic, setIsPublic] = useState(true);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [savedPasteId, setSavedPasteId] = useState<string | null>(null);
   const { isSignedIn } = useAuth();
   const handleCopy = () => {
     navigator.clipboard.writeText("Your code snippet here");
@@ -25,9 +28,10 @@ export default function Home() {
     toast("Code saved!");
   };
   const handleShare = () => {
-    toast("Link copied to clipboard!");
+    setShareModalOpen(true);
   };
   const [title, setTitle] = useState("");
+  const [content, setContent] = useState("// Type your code here...");
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -57,6 +61,7 @@ export default function Home() {
                 disabled={!isSignedIn}
                 onCheckedChange={setIsPublic}
               />
+              // Type your code here...
               <LanguageSelector value={language} onChange={setLanguage} />
             </div>
           </div>
@@ -67,8 +72,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="h-[600px] relative">
                 <MonacoWrapper
-                  language="javascript"
-                  value={""}
+                  language={language}
+                  value={content}
                   onChange={() => {}}
                 />
                 <div className="absolute top-4 right-4 z-10">
@@ -105,6 +110,23 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <div className="flex items-center space-x-4">
+            <span>Lines: {content.split("\n").length}</span>
+            <span>Characters: {content.length}</span>
+            <span>Language: {language}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span>Auto-save:</span>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+        <ShareModal
+          isOpen={shareModalOpen}
+          onClose={() => setShareModalOpen(false)}
+          pasteId={savedPasteId || ""}
+          title={title}
+        />
       </div>
     </div>
   );
