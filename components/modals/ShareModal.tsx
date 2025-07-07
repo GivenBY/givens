@@ -40,6 +40,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       toast("Failed to copy the link. Please copy it manually.");
+      console.error("Failed to copy text: ", err);
     }
   };
 

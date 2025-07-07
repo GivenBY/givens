@@ -5,62 +5,18 @@ import { ShareModal } from "@/components/modals/ShareModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@clerk/nextjs";
 import { Copy, Eye, EyeOff, Save, Share2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { v4 as uuidv4 } from "uuid";
 
-const PageSkeleton = () => (
-  <div className="max-w-7xl mx-auto px-4 py-6">
-    <div className="space-y-6">
-      {/* Header section skeleton */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex-1 max-w-md">
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-6 w-6" />
-            <Skeleton className="h-6 w-10" />
-            <Skeleton className="h-10 w-32" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main editor skeleton - simplified */}
-      <div className="relative">
-        <Card>
-          <CardContent className="p-0">
-            <div className="h-[600px] relative">
-              <Skeleton className="h-full w-full rounded-lg" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Footer stats skeleton */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-4 w-20" />
-          <Skeleton className="h-4 w-24" />
-        </div>
-        <div className="flex items-center space-x-2">
-          <Skeleton className="h-4 w-16" />
-          <Skeleton className="h-2 w-2 rounded-full" />
-        </div>
-      </div>
-    </div>
-  </div>
-);
 export default function Home() {
   const [language, setLanguage] = useState("javascript");
   const [isPublic, setIsPublic] = useState(true);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [savedPasteId, setSavedPasteId] = useState<string | null>(null);
+  const [savedPasteId, setSavedPasteId] = useState<string>("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("// Type your code here...");
   const { isSignedIn } = useAuth();
@@ -76,6 +32,11 @@ export default function Home() {
     toast("Code saved!");
   };
   const handleShare = () => {
+    setShareModalOpen(true);
+  };
+  const handlePaste = () => {
+    const newId = uuidv4();
+    setSavedPasteId(newId);
     setShareModalOpen(true);
   };
 
@@ -137,7 +98,7 @@ export default function Home() {
                 {/* Save + Share Buttons */}
                 <div className="absolute bottom-4 right-4 z-10 flex space-x-2">
                   <Button
-                    onClick={handleShare}
+                    onClick={handlePaste}
                     variant="outline"
                     size="sm"
                     className="shadow-lg backdrop-blur-sm bg-background/80 hover:bg-background/90 transition-all duration-200 btn-hover"
@@ -173,7 +134,7 @@ export default function Home() {
         <ShareModal
           isOpen={shareModalOpen}
           onClose={() => setShareModalOpen(false)}
-          pasteId={savedPasteId || ""}
+          pasteId={savedPasteId}
           title={title}
         />
       </div>
