@@ -12,7 +12,7 @@ import { toast } from "sonner";
 export default function Home() {
   const [language, setLanguage] = useState("javascript");
   const [isPublic, setIsPublic] = useState(true);
-  const { userId, isSignedIn } = useAuth();
+  const { isSignedIn } = useAuth();
   const handleCopy = () => {
     navigator.clipboard.writeText("Your code snippet here");
     toast("Code copied to clipboard!");
