@@ -61,7 +61,6 @@ export default function Home() {
                 disabled={!isSignedIn}
                 onCheckedChange={setIsPublic}
               />
-              // Type your code here...
               <LanguageSelector value={language} onChange={setLanguage} />
             </div>
           </div>

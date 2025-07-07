@@ -10,13 +10,13 @@ import { Label } from "@/components/ui/label";
 import { Check, Copy, Twitter } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
+
 interface ShareModalProps {
   isOpen: boolean;
   onClose: () => void;
   pasteId: string;
   title: string;
 }
-
 export const ShareModal: React.FC<ShareModalProps> = ({
   isOpen,
   onClose,
@@ -24,7 +24,13 @@ export const ShareModal: React.FC<ShareModalProps> = ({
   title,
 }) => {
   const [copied, setCopied] = useState(false);
-  const shareUrl = `${window.location.origin}/paste/${pasteId}`;
+  const [shareUrl, setShareUrl] = useState("");
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(`${window.location.origin}/paste/${pasteId}`);
+    }
+  }, [pasteId]);
 
   const copyToClipboard = async () => {
     try {
@@ -84,6 +90,7 @@ export const ShareModal: React.FC<ShareModalProps> = ({
                 size="sm"
                 variant="outline"
                 className="flex items-center space-x-2"
+                disabled={!shareUrl}
               >
                 <Twitter className="h-4 w-4" />
                 <span>Twitter</span>
