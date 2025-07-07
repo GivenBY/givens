@@ -31,9 +31,6 @@ export default function Home() {
     }
     toast("Code saved!");
   };
-  const handleShare = () => {
-    setShareModalOpen(true);
-  };
   const handlePaste = () => {
     const newId = uuidv4();
     setSavedPasteId(newId);
