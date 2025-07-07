@@ -21,7 +21,6 @@ export default function NavBar() {
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
-  if (!mounted) return <Skeleton className="h-16 w-full" />;
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
@@ -29,54 +28,78 @@ export default function NavBar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:border-gray-800 dark:bg-gray-950">
       <div className="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2" prefetch={false}>
-          <Terminal className="h-6 w-6 text-gray-800 dark:text-gray-100" />
-          <span className="font-bold font-mono text-lg">Givens</span>
-        </Link>
+        {!mounted ? (
+          <Skeleton className="h-6 w-28 rounded-full bg-gray-200 dark:bg-gray-700" />
+        ) : (
+          <Link href="/" className="flex items-center gap-2" prefetch={false}>
+            <Terminal className="h-6 w-6 text-gray-800 dark:text-gray-100" />
+            <span className="font-bold font-mono text-lg">Givens</span>
+          </Link>
+        )}
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link
-            href="/"
-            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
-            prefetch={false}
-          >
-            Editor
-          </Link>
-          <NavLink
-            href="/analytics"
-            label="Analytics"
-            isSignedIn={isSignedIn}
-          />
-          <NavLink href="/mypastes" label="My Pastes" isSignedIn={isSignedIn} />
+          {!mounted ? (
+            <>
+              <Skeleton className="h-6 w-20 rounded bg-gray-200 dark:bg-gray-700" />
+              <Skeleton className="h-6 w-24 rounded bg-gray-200 dark:bg-gray-700" />
+              <Skeleton className="h-6 w-24 rounded bg-gray-200 dark:bg-gray-700" />
+            </>
+          ) : (
+            <>
+              <Link
+                href="/"
+                className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                prefetch={false}
+              >
+                Editor
+              </Link>
+              <NavLink
+                href="/analytics"
+                label="Analytics"
+                isSignedIn={isSignedIn}
+              />
+              <NavLink
+                href="/mypastes"
+                label="My Pastes"
+                isSignedIn={isSignedIn}
+              />
+            </>
+          )}
         </nav>
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          {/* Theme toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleTheme}
-            className="rounded-full"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? (
-              <Sun className="h-5 w-5 text-yellow-400" />
-            ) : (
-              <Moon className="h-5 w-5 text-gray-600" />
-            )}
-          </Button>
+          {/* Theme Toggle */}
+          {!mounted ? (
+            <Skeleton className="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700" />
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleTheme}
+              className="rounded-full"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-yellow-400" />
+              ) : (
+                <Moon className="h-5 w-5 text-gray-600" />
+              )}
+            </Button>
+          )}
 
           {/* Auth */}
-          {isSignedIn ? (
+          {!mounted ? (
+            <Skeleton className="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700" />
+          ) : isSignedIn ? (
             <UserButton />
           ) : (
             <Button
               asChild
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="rounded-full"
+              className="rounded px-8 py-2 text-sm font-medium"
             >
               <Link href="/sign-in" prefetch={false} aria-label="Sign In">
                 Sign In

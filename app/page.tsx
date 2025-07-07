@@ -5,16 +5,64 @@ import { ShareModal } from "@/components/modals/ShareModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@clerk/nextjs";
 import { Copy, Eye, EyeOff, Save, Share2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+
+const PageSkeleton = () => (
+  <div className="max-w-7xl mx-auto px-4 py-6">
+    <div className="space-y-6">
+      {/* Header section skeleton */}
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        <div className="flex-1 max-w-md">
+          <Skeleton className="h-10 w-full" />
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-6 w-16" />
+            <Skeleton className="h-6 w-6" />
+            <Skeleton className="h-6 w-10" />
+            <Skeleton className="h-10 w-32" />
+          </div>
+        </div>
+      </div>
+
+      {/* Main editor skeleton - simplified */}
+      <div className="relative">
+        <Card>
+          <CardContent className="p-0">
+            <div className="h-[600px] relative">
+              <Skeleton className="h-full w-full rounded-lg" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Footer stats skeleton */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+        <div className="flex items-center space-x-2">
+          <Skeleton className="h-4 w-16" />
+          <Skeleton className="h-2 w-2 rounded-full" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 export default function Home() {
   const [language, setLanguage] = useState("javascript");
   const [isPublic, setIsPublic] = useState(true);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [savedPasteId, setSavedPasteId] = useState<string | null>(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("// Type your code here...");
   const { isSignedIn } = useAuth();
   const handleCopy = () => {
     navigator.clipboard.writeText("Your code snippet here");
@@ -30,8 +78,6 @@ export default function Home() {
   const handleShare = () => {
     setShareModalOpen(true);
   };
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("// Type your code here...");
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -73,8 +119,10 @@ export default function Home() {
                 <MonacoWrapper
                   language={language}
                   value={content}
-                  onChange={() => {}}
+                  onChange={(val) => setContent(val || "")}
                 />
+
+                {/* Copy Button */}
                 <div className="absolute top-4 right-4 z-10">
                   <Button
                     onClick={handleCopy}
@@ -85,6 +133,8 @@ export default function Home() {
                     <Copy className="h-4 w-4" />
                   </Button>
                 </div>
+
+                {/* Save + Share Buttons */}
                 <div className="absolute bottom-4 right-4 z-10 flex space-x-2">
                   <Button
                     onClick={handleShare}
@@ -95,11 +145,10 @@ export default function Home() {
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
-
                   <Button
                     onClick={handleSave}
                     size="sm"
-                    className="shadow-lg backdrop-blur-sm transition-all duration-200 btn-hover "
+                    className="shadow-lg backdrop-blur-sm transition-all duration-200 btn-hover"
                   >
                     <Save className="h-4 w-4 mr-2" />
                     Save
@@ -109,6 +158,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center space-x-4">
             <span>Lines: {content.split("\n").length}</span>

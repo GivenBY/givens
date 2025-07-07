@@ -7,6 +7,7 @@ import { Fira_Code, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
+import { Footer } from "@/components/ui/footer";
 import { dark } from "@clerk/themes";
 
 const fontSans = Inter({
@@ -48,7 +49,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
-            <main className="container mx-auto">{children}</main>
+            <main className="max-w-7xl mx-auto pb-6">{children}</main>
+            <Footer />
             <Toaster />
           </ThemeProvider>
         </body>
