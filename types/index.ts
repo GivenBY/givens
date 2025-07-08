@@ -1,24 +1,34 @@
 export interface Paste {
-  id: string;
+  _id: string;
   title: string;
   content: string;
   language: string;
   isPublic: boolean;
   createdAt: Date;
+  updatedAt?: Date;
   views: number;
-  author: string;
-  authorId: string;
+  authorId?: string;
+  authorName?: string;
+  authorAvatar?: string;
+  anonEditId?: string;
 }
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
+export interface UserAnalytics {
+  userId: string;
+  totalPastes: number;
+  totalViews: number;
+  popularLanguages: {
+    language: string;
+    count: number;
+  }[];
+  viewsOverTime: {
+    date: string;
+    views: number;
+  }[];
 }
 
 export interface Theme {
-  id: string;
+  _id: string;
   name: string;
   colors: {
     primary: string;
@@ -29,11 +39,4 @@ export interface Theme {
     muted: string;
     border: string;
   };
-}
-
-export interface Analytics {
-  totalPastes: number;
-  totalViews: number;
-  popularLanguages: { language: string; count: number }[];
-  viewsOverTime: { date: string; views: number }[];
 }
