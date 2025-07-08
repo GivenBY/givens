@@ -11,13 +11,16 @@ import { useAuth, UserButton } from "@clerk/nextjs";
 import { Menu, Moon, Sun, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import NavLink from "../NavLink";
 import { Skeleton } from "./skeleton";
 
 export default function NavBar() {
   const { theme, setTheme } = useTheme();
   const { isSignedIn } = useAuth();
+  const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -129,20 +132,28 @@ export default function NavBar() {
                   Editor
                 </Link>
               </DropdownMenuItem>
-              {isSignedIn && (
-                <>
-                  <DropdownMenuItem asChild>
-                    <Link href="/analytics" prefetch={false}>
-                      Analytics
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/mypastes" prefetch={false}>
-                      My Pastes
-                    </Link>
-                  </DropdownMenuItem>
-                </>
-              )}
+              <DropdownMenuItem
+                onClick={() => {
+                  if (!isSignedIn) {
+                    toast.warning("Please sign in to access Analytics");
+                  } else {
+                    router.push("/analytics");
+                  }
+                }}
+              >
+                Analytics
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  if (!isSignedIn) {
+                    toast.warning("Please sign in to access My Pastes");
+                  } else {
+                    router.push("/mypastes");
+                  }
+                }}
+              >
+                My Pastes
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 const NavLink = ({
   href,
@@ -12,21 +10,9 @@ const NavLink = ({
   label: string;
   isSignedIn: boolean | undefined;
 }) => {
-  const router = useRouter();
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (!isSignedIn) {
-      e.preventDefault();
-      toast.warning(`Please sign in to access ${label}`);
-    } else {
-      router.push(href);
-    }
-  };
-
   return (
     <Link
       href={href}
-      onClick={handleClick}
       prefetch={false}
       className={cn(
         "transition-colors",

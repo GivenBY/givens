@@ -30,15 +30,19 @@ interface MonacoWrapperProps {
   language?: string;
   value?: string;
   onChange?: (value: string | undefined) => void;
+  readOnly?: boolean;
 }
 
 export const MonacoWrapper = ({
   language = "javascript",
   value = "Type your code here...",
   onChange,
+  readOnly = false,
 }: MonacoWrapperProps) => {
+  console.log("MonacoWrapper props:", { language, value, readOnly });
+
   return (
-    <div className="w-full h-full border border-border rounded-lg overflow-hidden relative">
+    <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative">
       <MonacoEditor
         height="100%"
         language={language}
@@ -50,7 +54,7 @@ export const MonacoWrapper = ({
             independentColorPoolPerBracketType: false,
           },
           "semanticHighlighting.enabled": true,
-          readOnly: false,
+          readOnly: readOnly,
           minimap: { enabled: false },
           fontSize: 14,
           fontFamily: "Fira Code, Monaco, Consolas, monospace",
