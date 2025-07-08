@@ -1,10 +1,10 @@
 import dbConnect from "@/lib/db/mongoose";
 import { Paste } from "@/models/Paste";
 import { currentUser } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 // GET /api/analytics - Get analytics for the current user
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
 

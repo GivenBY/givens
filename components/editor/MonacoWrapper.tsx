@@ -39,8 +39,6 @@ export const MonacoWrapper = ({
   onChange,
   readOnly = false,
 }: MonacoWrapperProps) => {
-  console.log("MonacoWrapper props:", { language, value, readOnly });
-
   return (
     <div className="w-full h-[600px] border border-border rounded-lg overflow-hidden relative">
       <MonacoEditor

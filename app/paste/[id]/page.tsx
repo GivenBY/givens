@@ -21,7 +21,6 @@ export default function PastePage() {
 
   useEffect(() => {
     if (id) {
-      console.log("Executing API call for ID:", id);
       getPaste.execute(id);
     }
   }, [id]);
@@ -82,8 +81,6 @@ export default function PastePage() {
       </div>
     );
   }
-  console.log("Paste data:", paste);
-
   if (error) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-6">
