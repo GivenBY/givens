@@ -34,11 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider appearance={{ baseTheme: dark, variables: { colorPrimary: "#2563eb"}}}>
-      {/* ClerkProvider is used to manage authentication and user sessions */}
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "min-h-screen bg-background font-sans antialiased flex flex-col",
             fontSans.variable,
             fontMono.variable
           )}
@@ -50,7 +49,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <NavBar />
-            <main className="max-w-7xl mx-auto pb-6 min-h-[800px]">{children}</main>
+            <main className="max-w-7xl mx-auto pb-6 flex-1 w-full">{children}</main>
             <Footer />
             <Toaster />
           </ThemeProvider>
