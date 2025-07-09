@@ -40,3 +40,14 @@ export interface Theme {
     border: string;
   };
 }
+
+export interface clerkTheme{
+  baseTheme: 'light' | 'dark';
+  colors: {
+    primary: string;
+    secondary: string;
+    background: string;
+    text: string;
+    border: string;
+  };
+}
