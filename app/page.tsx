@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 
 import CodeEditor from "@/components/editor/CodeEditor";
 import { EditorHeader } from "@/components/editor/EditorHeader";

@@ -13,7 +13,7 @@ export default function Navbar() {
     const navLinks = [
         { href: "/", label: "Home" },
         { href: "/explore", label: "Explore" },
-        { href: "/my-pastes", label: "My Pastes" },
+        { href: "/mypastes", label: "My Pastes" },
     ];
     usePrismTheme(theme);
 
@@ -42,9 +42,12 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-3">
                     <ThemeSelector value={theme} onChange={setTheme} />
-                    <Button variant="outline" size="icon" className="px-8 hover:bg-muted">
+                    <Link
+                        href="/auth"
+                        className="px-4 hover:bg-muted border rounded-md text-sm font-medium transition-colors bg-secondary/70 text-foreground border-border h-10 flex items-center justify-center"
+                    >
                         SignIn
-                    </Button>
+                    </Link>
 
                     <Sheet>
                         <SheetTrigger asChild>

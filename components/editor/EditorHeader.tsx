@@ -3,7 +3,6 @@ import { LanguageSelector } from "@/components/editor/LanguageSelector";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 
 interface EditorHeaderProps {
     title: string;
@@ -20,7 +19,7 @@ export const EditorHeader = ({ title, onTitleChange, isPublic, onVisibilityChang
 
     return (
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <div className="flex-1 max-w-md">
+            <div className="flex-1 max-w-md w-full">
                 <Input
                     placeholder="Enter paste title..."
                     value={title}
@@ -28,8 +27,8 @@ export const EditorHeader = ({ title, onTitleChange, isPublic, onVisibilityChang
                     className="text-lg font-medium"
                 />
             </div>
-            <div className="flex items-center gap-4">
-                <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-start">
+                <div className="flex items-center space-x-2 w-full sm:w-auto justify-around">
                     <div className="flex items-center space-x-2 text-sm font-medium">
                         <span>{isPublic ? "Public" : "Private"}</span>
                         {isPublic ? (
