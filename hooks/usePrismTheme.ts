@@ -1,20 +1,35 @@
-import { editorThemes } from "@/data/editorThemes";
-import { useEffect } from "react";
+import { useEffect, useState } from 'react';
 
-export function usePrismTheme(theme: string) {
-    useEffect(() => {
-        const themeObj = editorThemes.find((t) => t.value === theme);
-        if (!themeObj) return;
+export const usePrismTheme = (theme: string) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-        // remove any old theme <link>
-        const oldLink = document.getElementById("prism-theme") as HTMLLinkElement;
-        if (oldLink) oldLink.remove();
+  useEffect(() => {
+    const loadTheme = async () => {
+      setIsLoading(true);
 
-        // add new theme <link>
-        const link = document.createElement("link");
-        link.id = "prism-theme";
-        link.rel = "stylesheet";
-        link.href = `/themes/${themeObj.css}`; // put your css in public/themes/
+      // Remove existing theme stylesheets
+      const existingLinks = document.querySelectorAll('link[data-prism-theme]');
+      existingLinks.forEach(link => link.remove());
+
+      // Load new theme
+      if (theme && theme !== 'default') {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = `/themes/prism-${theme}.css`;
+        link.setAttribute('data-prism-theme', theme);
+
+        link.onload = () => setIsLoading(false);
+        link.onerror = () => setIsLoading(false);
+
         document.head.appendChild(link);
-    }, [theme]);
-}
+      } else {
+        // Use default theme or no theme
+        setIsLoading(false);
+      }
+    };
+
+    loadTheme();
+  }, [theme]);
+
+  return { isLoading };
+};

@@ -60,7 +60,7 @@ export function SignUp() {
                         onClick={async () => {
                             await signIn.social({
                                 provider: "google",
-                                callbackURL: "/dashboard",
+                                callbackURL: "/",
                             });
                         }}
                     >
@@ -96,7 +96,7 @@ export function SignUp() {
                         onClick={async () => {
                             await signIn.social({
                                 provider: "github",
-                                callbackURL: "/dashboard",
+                                callbackURL: "/",
                             });
                         }}
                     >
@@ -148,7 +148,7 @@ export function SignUp() {
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
                         <Input
-                            id="email"
+                            id="email-signup"
                             type="email"
                             placeholder="m@example.com"
                             required
@@ -160,7 +160,7 @@ export function SignUp() {
                     <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
                         <Input
-                            id="password"
+                            id="password-signup"
                             type="password"
                             placeholder="Password"
                             autoComplete="new-password"
@@ -230,7 +230,7 @@ export function SignUp() {
                                     password,
                                     name: `${firstName} ${lastName}`,
                                     image: image ? await convertImageToBase64(image) : "",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/auth",
                                     fetchOptions: {
                                         onError: (ctx) => { toast.error(ctx.error.message); },
                                         onSuccess: async () => {

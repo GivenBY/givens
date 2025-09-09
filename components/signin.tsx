@@ -4,21 +4,20 @@ import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
+    CardDescription,
     CardHeader,
     CardTitle,
-    CardDescription,
 } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useTransition } from "react";
-import { Loader2 } from "lucide-react";
 import { authClient, signIn } from "@/lib/auth-client";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 import { getCallbackURL } from "@/lib/shared";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -51,7 +50,7 @@ export default function SignIn() {
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "google",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/",
                                 });
                             }}
                         >
@@ -88,7 +87,7 @@ export default function SignIn() {
                             onClick={async () => {
                                 await signIn.social({
                                     provider: "github",
-                                    callbackURL: "/dashboard",
+                                    callbackURL: "/",
                                 });
                             }}
                         >
@@ -117,7 +116,7 @@ export default function SignIn() {
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email</Label>
                         <Input
-                            id="email"
+                            id="email-signin"
                             type="email"
                             placeholder="m@example.com"
                             required
@@ -135,7 +134,7 @@ export default function SignIn() {
                         </div>
 
                         <Input
-                            id="password"
+                            id="password-signin"
                             type="password"
                             placeholder="password"
                             autoComplete="password"
