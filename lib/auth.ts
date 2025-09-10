@@ -13,9 +13,12 @@ export const auth = betterAuth({
   database: new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false,
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    max: 10, // Reduced pool size
+    min: 2, // Minimum connections
+    idleTimeoutMillis: 10000, // 10 seconds
+    connectionTimeoutMillis: 10000, // 10 seconds
+    query_timeout: 10000, // Query timeout
+    statement_timeout: 10000, // Statement timeout
   }),
 
   secret: process.env.BETTER_AUTH_SECRET,
@@ -35,21 +38,26 @@ export const auth = betterAuth({
   },
 
   socialProviders: {
-    github: {
-      clientId: process.env.GITHUB_CLIENT_ID as string,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
-      scope: ["user:email"],
-    },
     google: {
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       scope: ["openid", "email", "profile"],
     },
+    ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET ? {
+      github: {
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        scope: ["user:email"],
+      },
+    } : {}),
   },
 
   account: {
     accountLinking: {
-      trustedProviders: ["google", "github"],
+      trustedProviders: [
+        "google",
+        ...(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET ? ["github"] : []),
+      ],
     },
   },
 
