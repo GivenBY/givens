@@ -1,4 +1,3 @@
-// app/auth/page.tsx
 import { Suspense } from "react";
 import AuthContent from "./auth-content";
 
