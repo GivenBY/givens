@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient, useSession } from "@/lib/auth-client";
 import { getCallbackURL } from "@/lib/shared";
+import { Tabs } from "@/components/ui/tabs2";
+import SignIn from "@/components/signin";
+import { SignUp } from "@/components/signup";
 
 export default function AuthContent({ searchParams }: { searchParams: { [key: string]: string } }) {
     const router = useRouter();
@@ -17,7 +20,10 @@ export default function AuthContent({ searchParams }: { searchParams: { [key: st
     useEffect(() => {
         authClient.oneTap({
             fetchOptions: {
-                onError: ({ error }) => { toast.error(error?.message || "An error occurred"); },
+                onError: ({ error }) => {
+                    console.error("OneTap error:", error);
+                    toast.error(error?.message || "An error occurred");
+                },
                 onSuccess: () => {
                     toast.success("Successfully signed in");
                     router.push(getCallbackURL(searchParams));
@@ -28,5 +34,27 @@ export default function AuthContent({ searchParams }: { searchParams: { [key: st
 
     if (isPending || session) return null;
 
-    return <div>...your tabs...</div>;
+    const tabs = [
+        {
+            title: "Sign In",
+            value: "signin",
+            content: <SignIn />,
+        },
+        {
+            title: "Sign Up",
+            value: "signup",
+            content: <SignUp />,
+        },
+    ];
+
+    return (
+        <div className="flex min-h-screen items-center justify-center p-4">
+            <div className="w-full max-w-md">
+                <Tabs
+                    tabs={tabs}
+                    containerClassName="justify-center"
+                />
+            </div>
+        </div>
+    );
 }
