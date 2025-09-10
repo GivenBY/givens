@@ -16,6 +16,7 @@ import { signUp, signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import { getCallbackURL } from "@/lib/shared";
+import Image from "next/image";
 
 export function SignUp() {
     const [firstName, setFirstName] = useState("");
@@ -186,7 +187,7 @@ export function SignUp() {
                         <div className="flex items-end gap-4">
                             {imagePreview && (
                                 <div className="relative w-16 h-16 rounded-sm overflow-hidden">
-                                    <img
+                                    <Image
                                         src={imagePreview}
                                         alt="Profile preview"
                                         className="object-cover w-full h-full"

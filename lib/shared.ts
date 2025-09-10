@@ -1,18 +1,20 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 
-const allowedCallbackSet: ReadonlySet<string> = new Set([
-    "/",
-]);
+const allowedCallbackSet: ReadonlySet<string> = new Set(["/"]);
 
 export const getCallbackURL = (
-    queryParams: ReadonlyURLSearchParams,
+    queryParams: ReadonlyURLSearchParams | { [key: string]: string }
 ): string => {
-    const callbackUrl = queryParams.get("callbackUrl");
-    if (callbackUrl) {
-        if (allowedCallbackSet.has(callbackUrl)) {
-            return callbackUrl;
-        }
-        return "/";
+    let callbackUrl: string | null = null;
+
+    if (queryParams instanceof URLSearchParams) {
+        callbackUrl = queryParams.get("callbackUrl");
+    } else {
+        callbackUrl = queryParams["callbackUrl"] ?? null;
+    }
+
+    if (callbackUrl && allowedCallbackSet.has(callbackUrl)) {
+        return callbackUrl;
     }
     return "/";
 };

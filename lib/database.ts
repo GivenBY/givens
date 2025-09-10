@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { Paste, CreatePasteRequest, User } from './types';
+import { Paste, CreatePasteRequest } from './types';
 import { generateUniqueShortUrl } from './url-generator';
 import { logger } from './errors';
 

@@ -3,15 +3,9 @@ import { auth } from '@/lib/auth';
 import { handleApiError, AuthenticationError, ValidationError } from '@/lib/errors';
 import { deletePaste } from '@/lib/database';
 
-interface RouteParams {
-  params: {
-    pasteId: string;
-  };
-}
-
 export async function DELETE(
   request: NextRequest,
-  { params }: RouteParams
+  context: { params: Promise<{ pasteId: string }> }
 ) {
   try {
     const session = await auth.api.getSession({
@@ -22,7 +16,7 @@ export async function DELETE(
       throw new AuthenticationError('Authentication required');
     }
 
-    const { pasteId } = params;
+    const { pasteId } = await context.params;
 
     if (!pasteId) {
       throw new ValidationError('Paste ID is required');
